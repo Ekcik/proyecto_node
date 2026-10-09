@@ -1,0 +1,16 @@
+{
+  "name": "pre_entrega",
+  "version": "1.0.0",
+  "description": "Herramienta de consola para administrar productos con Fake Store API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  }
+}
