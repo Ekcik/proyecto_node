@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Los clientes acceden a través de Express. El Admin SDK usa permisos IAM.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
