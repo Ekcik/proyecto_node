@@ -42,7 +42,7 @@ El `overrides` de npm fija `@grpc/grpc-js` en `1.14.7` dentro de `@firebase/fire
 
 ## Configuración manual de Firebase
 
-Estos pasos los debe realizar la persona propietaria de la cuenta. El repositorio no incluye un proyecto Firebase configurado ni credenciales reales.
+Para verificar el proyecto, configuré Firebase y utilicé una base de datos Firestore real. Las credenciales de la cuenta de servicio son privadas y no forman parte del repositorio. Mantengo los siguientes pasos para que otra persona pueda configurar su propio entorno.
 
 1. Ingresar a la [consola de Firebase](https://console.firebase.google.com/) y crear un proyecto. Copiar su **ID de proyecto**, que puede diferir del nombre visible.
 2. En **Firestore Database**, crear una base de datos de edición Standard, en modo nativo y con el identificador `(default)`. Elegir la ubicación y comenzar con acceso restringido, evitando reglas de modo de prueba abiertas.
@@ -221,7 +221,7 @@ npm test
 
 Se utiliza `node:test` con Supertest. Los tests HTTP sustituyen el modelo por almacenamiento en memoria exclusivo de las pruebas. Los tests del modelo sustituyen los métodos del SDK por dobles controlados. Las contraseñas y claves JWT de prueba se generan aleatoriamente durante la ejecución. El flujo HTTP usa login real y validación real de JWT; sólo se sustituye la persistencia.
 
-Se verifican consultas públicas, CRUD, códigos de respuesta, campos obligatorios, IDs, JSON malformado, límites de tamaño, credenciales inválidas, firma y vencimiento de JWT, algoritmo permitido, 401/403, errores externos y CORS. También se prueban hashes, variables obligatorias, rechazo de arranque sin configuración y operaciones del modelo ante documentos ausentes.
+Con `npm test` obtuve **93 pruebas aprobadas y ninguna fallida**. Verifiqué consultas públicas, CRUD, códigos de respuesta, campos obligatorios, IDs, JSON malformado, límites de tamaño, credenciales inválidas, firma y vencimiento de JWT, algoritmo permitido, 401/403, errores externos y CORS. También probé hashes, variables obligatorias, rechazo de arranque sin configuración y operaciones del modelo ante documentos ausentes.
 
 **Estos tests no demuestran una conexión real a Firestore** ni verifican los permisos IAM del proyecto del estudiante.
 
@@ -235,7 +235,7 @@ npm run test:firestore
 
 Este comando se ejecuta por separado y falla si no se configuró el servicio. Realiza una conexión real, un login con contraseña efímera para ese proceso y el recorrido crear → consultar → actualizar → verificar persistencia → listar → eliminar. No cambia el administrador del servidor normal. Sólo modifica un documento creado por el propio test y procura eliminarlo en `finally`; si el proceso se interrumpe o falla el servicio, puede quedar un documento con categoría `Pruebas` que habrá que revisar manualmente. Las operaciones consumen la cuota del proyecto.
 
-La prueba real no se ejecutó durante esta implementación, porque no se proporcionaron credenciales de Firebase. Queda pendiente para la persona que configure la cuenta. Los ejemplos manuales están en [docs/ejemplos-api.md](docs/ejemplos-api.md).
+Ejecuté `npm run test:firestore` con un proyecto Firestore real y la prueba de integración fue aprobada. Comprobé la conexión y la lectura de productos, además del login JWT, la creación, la consulta, la actualización, la persistencia y la eliminación de un documento temporal. Las credenciales utilizadas son privadas y no forman parte del repositorio. Los ejemplos manuales están en [docs/ejemplos-api.md](docs/ejemplos-api.md).
 
 Para revisar las dependencias:
 
@@ -243,9 +243,11 @@ Para revisar las dependencias:
 npm audit
 ```
 
+Al ejecutar `npm audit`, obtuve **0 vulnerabilidades reportadas**. Como control de formato, también comprobé que `git diff --cached --check` finalizó sin errores.
+
 ## Alcance y pendientes
 
-La entrega implementa configuración, dependencias, servidor, rutas, capas de responsabilidad, persistencia Firestore y autenticación JWT, además de validaciones, tests y documentación. Falta realizar la configuración manual de Firebase y comprobar el CRUD con credenciales reales antes de presentar una demostración de persistencia.
+En esta entrega implementé configuración, dependencias, servidor, rutas, capas de responsabilidad, persistencia Firestore y autenticación JWT, además de validaciones, tests y documentación. También completé la configuración de Firebase y comprobé el CRUD y la persistencia mediante la prueba de integración con Firestore real. Para reproducir el proyecto en otro entorno, cada persona debe configurar su propia cuenta y sus credenciales privadas siguiendo las instrucciones anteriores.
 
 Es un administrador de demostración para un trabajo académico. Para un despliegue público se debe configurar HTTPS y la gestión de secretos en el entorno de hosting. El límite de login usa memoria del proceso: si se ejecutan varias instancias, requiere un almacenamiento compartido; detrás de un proxy también se debe configurar `trust proxy` de acuerdo con esa infraestructura. La API no incluye interfaz web, gestión de múltiples cuentas ni paginación.
 

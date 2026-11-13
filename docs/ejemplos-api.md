@@ -119,4 +119,4 @@ Invoke-RestMethod $productUrl
 | Más de 10 solicitudes de login desde la misma IP en 15 minutos | 429 |
 | Caída de Firestore después del arranque | 500 general; cubierto con fallos simulados en `npm test` |
 
-Los ejemplos manuales no fueron ejecutados contra un proyecto real durante la implementación. Para comprobar Firestore también está disponible `npm run test:firestore`, después de completar la configuración.
+Ejecuté `npm run test:firestore` con un proyecto Firestore real y la prueba de integración fue aprobada. Verifiqué la conexión, la lectura de productos, el login JWT y la creación, consulta, actualización, persistencia y eliminación de un documento temporal. Mantengo los ejemplos anteriores como guía para repetir el recorrido de forma manual. Para hacerlo en otro entorno, cada persona debe configurar sus propias credenciales; las que utilicé son privadas y no forman parte del repositorio.
